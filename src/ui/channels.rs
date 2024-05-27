@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use crate::api::{data::*, wrapper};
-use crate::ui::StatefulLists::*;
+use crate::ui::stateful_lists::*;
 
 #[derive(Debug)]
 pub enum DisplayMode {
@@ -34,8 +34,8 @@ impl App {
     //Very awkward
     //Use enums and strum crate
     pub fn react_to_gateway(&mut self, gate_response: &GatewayResponse) {
-        match gate_response.operation.as_str() {
-            "MESSAGE_CREATE" => {
+        match gate_response.operation {
+            GatewayOperation::MessageCreate => {
                 let mut channel_found = Vec::new();
                 let gate_channel_id = &gate_response.message.channel_id;
                 for (key, value) in &self.loaded_channels {
@@ -54,7 +54,7 @@ impl App {
                     // dbg!(&self.loaded_channels);
                 }
             },
-            "READY" => {dbg!(&gate_response.guilds);},
+            GatewayOperation::Ready => {},
             _ => (),
         }
     }
@@ -74,19 +74,13 @@ impl App {
     //get current selected channel object
     pub fn get_channel(&mut self) -> Channel {
         let index = self.items.state.selected();
-        let index = match index {
-            Some(v) => v,
-            None => 0,
-        };
+        let index = index.unwrap_or_else(|| 0);
         return self.items.items[index].clone();
     }
 
     pub fn get_guild(&mut self) -> Guild{
         let index = self.guilds.state.selected();
-        let index = match index {
-            Some(v) => v,
-            None => 0,
-        };
+        let index = index.unwrap_or_else(|| 0);
 
         return self.guilds.items[index].clone();
     }

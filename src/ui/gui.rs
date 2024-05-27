@@ -57,15 +57,16 @@ pub fn summon_gooey(conn: Connection) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-//Main loop
 fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App, cbox: &mut ChatBox, gate_rx: &Receiver<GatewayResponse>)
-         -> io::Result<()> {
-            
+                       -> io::Result<()> {
+
     let tick_rate = Duration::from_millis(250);
     let mut last_tick = Instant::now();
     loop {
         match gate_rx.try_recv() {
-            Ok(v) => {app.react_to_gateway(&v)},
+            Ok(v) => {
+                app.react_to_gateway(&v)
+            },
             Err(_v) => {},
         }
 
@@ -76,9 +77,7 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App, cbox: &mut Cha
             .unwrap_or_else(|| Duration::from_secs(0));
 
         //Read input
-        //CodeAesthetic would be upset
-        //Have to use poll to avoid blocking
-        if crossterm::event::poll(timeout)? {
+        if event::poll(timeout)? {
             if let Event::Key(key) = event::read()? {
                 match cbox.input_mode {
                     InputMode::Normal => {
@@ -164,7 +163,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &mut App, cbox: &mut ChatBox) {
             f.render_stateful_widget(items, chunks[0], &mut app.items.state);
         }
     }
-    
+
     // Could be better, a lot of cloning
     let title = app.get_current_title();
     let chat_messages = app.get_messages();
@@ -175,7 +174,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &mut App, cbox: &mut ChatBox) {
             let chat_messages = msg_to_list(v, &right_chunks[0]);
             let chat = List::new(chat_messages)
                 .block(Block::default().borders(Borders::ALL)
-                .title(title));
+                    .title(title));
 
             f.render_widget(chat, right_chunks[0]);
         },
@@ -183,7 +182,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &mut App, cbox: &mut ChatBox) {
             let ad = vec![ListItem::new("Check my other projects on https://github.com/DvorakDwarf")];
             let chat = List::new(ad)
                 .block(Block::default().borders(Borders::ALL)
-                .title(title));
+                    .title(title));
 
             f.render_widget(chat, right_chunks[0]);
         },

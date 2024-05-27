@@ -34,26 +34,40 @@ impl Connection {
 
 #[derive(Clone, Debug)]
 pub struct GatewayResponse {
-    pub operation: String,
+    pub operation: GatewayOperation,
     pub message: Msg,
     pub guilds: Vec<Guild>,
+}
+
+#[derive(Clone, Debug)]
+pub enum GatewayOperation {
+    MessageCreate,
+    Ready,
+    Reconnected,
 }
 
 impl GatewayResponse {
     pub fn msg_create(message: Msg) -> GatewayResponse {
         GatewayResponse {
-            operation: "MESSAGE_CREATE".to_string(),
+            operation: GatewayOperation::MessageCreate,
             message,
             guilds: Vec::new(),
         }
     }
 
-    //Send initial data like guilds
     pub fn ready(guilds: Vec<Guild>) -> GatewayResponse {
-        GatewayResponse { 
-            operation: "READY".to_string(),
+        GatewayResponse {
+            operation: GatewayOperation::Ready,
             message: Msg::new(),
             guilds,
+        }
+    }
+
+    pub fn reconnected() -> GatewayResponse {
+        GatewayResponse {
+            operation: GatewayOperation::Reconnected,
+            message: Msg::new(),
+            guilds: Vec::new(),
         }
     }
 }
@@ -96,7 +110,6 @@ pub struct Guild {
 
 impl Guild {
     pub fn from_list(event: &Value) -> Vec<Guild> {
-        //VERY UGLY + WRAPPER DUPE. Fix eventually
         let guild_vc = String::from("2");
         let category = String::from("4");
         let announcement_thread = String::from("10");

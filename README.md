@@ -7,11 +7,9 @@
 # What is this ?
 Disrust is a TUI discord client written entirely in glorious Rust. It works*. 
 
-The app is not fully feature complete. It's missing a lot of discord features, but the basics like navigating between servers, viewing channels, sending messages, etc are there. I might eventually come back to clean up code and make it fancier. 
+The app is not fully feature complete. It's missing a lot of discord features, but the basics like navigating between servers, viewing channels, sending messages, etc are there. I might eventually just rewrite it entirely from scratch.
 
-It's not fully complete because I really badly wanted to move on to my "infinite storage glitch" project idea and because every 10 minutes spent on doing anything UI related is shaving off at least a year of my lifespan each time.
-
-I made it mostly to get better at Rust and because it's fun to work on a larger project for once. 
+This is made purely for educational purposes.
 
 ---
 
@@ -42,9 +40,3 @@ The use of this app is very much not kosher according to discord's TOS. I do not
 Thanks to <b>Traumatism</b> (https://github.com/Traumatism) and their project <b>ToastCord</b> (https://github.com/Traumatism/ToastCord) for guidance. This would have been a lot more confusing to code without them.
 
 Thanks to <b>6cord</b> (https://github.com/diamondburned/6cord) for the initial inspiration
-
-I appreciate any and all roasting of the code so I can improve. 
-
-Feel free to modify this code however you like (As long as the license remains GPL 3.0) or use for reference on how to interact with discord's API and specifically gateway, it was a pain in the ass to setup. I wish I had a reference like this in Rust when I started. 
-
-The API in general is pretty neat btw. I recommend messing with it or maybe starting a project with it.

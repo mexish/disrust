@@ -232,6 +232,7 @@ dependencies = [
  "tokio",
  "tokio-tungstenite",
  "tui",
+ "tungstenite",
  "url",
 ]
 
